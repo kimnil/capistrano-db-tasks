@@ -67,7 +67,7 @@ module Database
     def dump
       commands = ["cd #{@cap.current_path} && #{dump_cmd} | bzip2 - - > #{output_file}"]
 
-      commands do |ch, stream, data|
+      run commands do |ch, stream, data|
         if data =~ /Password/
           ch.send_data("#{@config['password']}\n")
         end
