@@ -99,7 +99,14 @@ module Database
     end
 
     def dump
-      system "#{dump_cmd} | bzip2 - - > #{output_file}"
+      commands = "#{dump_cmd} | bzip2 - - > #{output_file}"
+
+       commands do |ch, stream, data|
+        if data =~ /Password/
+          ch.send_data("#{@config['password']}\n")
+        end
+      end
+
       self
     end
 
